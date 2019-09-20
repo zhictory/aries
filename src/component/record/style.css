@@ -1,0 +1,28 @@
+.app-record {
+  margin: 20px 10px;
+  text-align: left;
+}
+
+.time-blocks {
+  margin: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+.time-block {
+  margin: 2px;
+  width: 60px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border: 1px solid;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.app-record td {
+  padding: 5px;
+  border: 1px solid;
+  width: 100px;
+}
