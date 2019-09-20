@@ -2,7 +2,10 @@
   "name": "koa-react-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://117.78.7.41",
   "dependencies": {
+    "koa": "^2.8.1",
+    "koa-static": "^5.0.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-scripts": "3.1.2"
