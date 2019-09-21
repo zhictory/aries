@@ -5,7 +5,7 @@ import "./style.css";
 class Record extends Component {
   constructor(props) {
     super(props);
-    const date = new Date();
+    this.date = new Date();
     this.state = {
       event: "Hello World",
       start: "09:00",
@@ -13,17 +13,17 @@ class Record extends Component {
       copySuccess: false
     };
     this.startEveryDay = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
+      this.date.getFullYear(),
+      this.date.getMonth(),
+      this.date.getDate(),
       9,
       0,
       0
     ).getTime();
     this.endEveryDay = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
+      this.date.getFullYear(),
+      this.date.getMonth(),
+      this.date.getDate(),
       18,
       0,
       0
@@ -101,15 +101,35 @@ class Record extends Component {
     document.body.removeChild(input);
   };
 
+  getDuring = () => {
+    const { start, end } = this.state;
+    const startTime = new Date(
+      this.date.getFullYear(),
+      this.date.getMonth(),
+      this.date.getDate(),
+      start.split(":")[0],
+      start.split(":")[1],
+      0
+    );
+    const endTime = new Date(
+      this.date.getFullYear(),
+      this.date.getMonth(),
+      this.date.getDate(),
+      end.split(":")[0],
+      end.split(":")[1],
+      0
+    );
+    return ((endTime - startTime)/1000/60/60).toFixed(2);
+  };
+
   render() {
     const { event, start, end, copySuccess } = this.state;
-    const hours = end.split(":")[0] - start.split(":")[0];
-    const minutes = Math.abs(end.split(":")[1] - start.split(":")[1]);
-    const minutesToHours = (minutes / 60).toFixed(2);
-    const during = parseFloat(hours) + parseFloat(minutesToHours);
+    const during = this.getDuring();
     return (
       <div className="app-record">
-        <header><h1>工作时间模板</h1></header>
+        <header>
+          <h1>工作时间模板</h1>
+        </header>
         <p className="app-record__todo">
           <input
             type="text"
