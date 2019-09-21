@@ -8,8 +8,8 @@ class Record extends Component {
     const date = new Date();
     this.state = {
       event: "Hello World",
-      start: "",
-      end: "",
+      start: "09:00",
+      end: "09:00",
       copySuccess: false
     };
     this.startEveryDay = new Date(
@@ -103,8 +103,13 @@ class Record extends Component {
 
   render() {
     const { event, start, end, copySuccess } = this.state;
+    const hours = end.split(":")[0] - start.split(":")[0];
+    const minutes = Math.abs(end.split(":")[1] - start.split(":")[1]);
+    const minutesToHours = (minutes / 60).toFixed(2);
+    const during = parseFloat(hours) + parseFloat(minutesToHours);
     return (
       <div className="app-record">
+        <header><h1>工作时间模板</h1></header>
         <p className="app-record__todo">
           <input
             type="text"
@@ -124,13 +129,13 @@ class Record extends Component {
             <tr>
               <td>{event}</td>
               <td>{start}</td>
-              <td>{end}</td>
+              <td>{during}</td>
             </tr>
           </tbody>
         </table>
         <div
           className="app-record__copy"
-          onClick={this.copy.bind(this, event + " " + start + " " + end)}
+          onClick={this.copy.bind(this, event + " " + start + " " + during)}
         >
           <span role="img" aria-label="check">
             📋
