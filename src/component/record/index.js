@@ -94,7 +94,7 @@ class Record extends Component {
       this.setState({ copySuccess: true });
       setTimeout(() => {
         this.setState({ copySuccess: false });
-      }, 1000)
+      }, 1000);
     } else {
       this.setState({ copySuccess: false });
     }
@@ -128,8 +128,18 @@ class Record extends Component {
             </tr>
           </tbody>
         </table>
-        <div className="app-record__copy" onClick={this.copy.bind(this, event + " " + start + " " + end)}>
-          📋 {copySuccess && "✔"}
+        <div
+          className="app-record__copy"
+          onClick={this.copy.bind(this, event + " " + start + " " + end)}
+        >
+          <span role="img" aria-label="check">
+            📋
+          </span>{" "}
+          {copySuccess && (
+            <span role="img" aria-label="check">
+              ✔️
+            </span>
+          )}
         </div>
       </div>
     );
