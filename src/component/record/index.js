@@ -8,12 +8,11 @@ class Record extends Component {
     const date = new Date();
     this.state = {
       event: "Hello World",
-      start: `${date.getHours() < 10 ? "0" : ""}${date.getHours()}:${
-        date.getMinutes() < 10 ? "0" : ""
-      }${date.getMinutes()}`,
-      during: 0
+      start: "",
+      end: "",
+      copySuccess: false
     };
-    this.startTime = new Date(
+    this.startEveryDay = new Date(
       date.getFullYear(),
       date.getMonth(),
       date.getDate(),
@@ -21,7 +20,7 @@ class Record extends Component {
       0,
       0
     ).getTime();
-    this.endTime = new Date(
+    this.endEveryDay = new Date(
       date.getFullYear(),
       date.getMonth(),
       date.getDate(),
@@ -31,7 +30,7 @@ class Record extends Component {
     ).getTime();
   }
 
-  addTODO(e) {
+  addTODO = e => {
     if (e.charCode === 13) {
       const date = new Date();
       this.setState({
@@ -40,50 +39,98 @@ class Record extends Component {
         }${date.getMinutes()}`
       });
     }
-  }
+  };
 
-  updateTODO(e) {
+  updateTODO = e => {
     this.setState({ event: e.target.value });
+  };
+
+  renderTimeBlock(currentBlock) {
+    let startEveryDay = this.startEveryDay;
+    const endEveryDay = this.endEveryDay;
+    let date = new Date(startEveryDay);
+    const blocks = [];
+    // 生成可选择的时间块
+    while (date.getTime() <= endEveryDay) {
+      blocks.push(
+        `${(date.getHours() < 10 ? "0" : "") +
+          date.getHours()}:${(date.getMinutes() < 10 ? "0" : "") +
+          date.getMinutes()}`
+      );
+      startEveryDay += 15 * 60 * 1000;
+      date = new Date(startEveryDay);
+    }
+    return blocks.map((block, index) => (
+      <li
+        key={index}
+        className={
+          "time-block" + (block === currentBlock ? " time-block_on" : "")
+        }
+        onClick={this.handleChooseTime}
+        data-block={block}
+      >
+        {block}
+      </li>
+    ));
   }
 
-  renderTimeBlock() {
-    let start = this.startTime;
-    let end = this.endTime;
-    let date = new Date(start);
-    const blocks = [];
-    while (date.getTime() <= end) {
-      blocks.push(
-        `${(date.getHours() < 10 ? "0" : "") + date.getHours()}:${
-          (date.getMinutes() < 10 ? "0" : "") + date.getMinutes()
-        }`
-      );
-      start += 15 * 60 * 1000;
-      date = new Date(start);
+  handleChooseTime = e => {
+    const type = e.target.parentNode.getAttribute("data-time");
+    const time = e.target.getAttribute("data-block");
+    this.setState({
+      [type]: time
+    });
+  };
+
+  copy = content => {
+    const input = document.createElement("input");
+    input.setAttribute("readonly", "readonly");
+    input.setAttribute("value", content);
+    document.body.appendChild(input);
+    input.select(); // 兼容 pc
+    input.setSelectionRange(0, 9999); // 兼容 ios
+    if (document.execCommand("copy")) {
+      document.execCommand("copy");
+      this.setState({ copySuccess: true });
+      setTimeout(() => {
+        this.setState({ copySuccess: false });
+      }, 1000)
+    } else {
+      this.setState({ copySuccess: false });
     }
-    return blocks.map((block, index) => <li key={index} className="time-block">{block}</li>);
-  }
+    document.body.removeChild(input);
+  };
 
   render() {
-    const { event, start, during } = this.state;
+    const { event, start, end, copySuccess } = this.state;
     return (
       <div className="app-record">
-        <p>
+        <p className="app-record__todo">
           <input
             type="text"
-            onChange={this.updateTODO.bind(this)}
-            onKeyPress={this.addTODO.bind(this)}
+            onChange={this.updateTODO}
+            onKeyPress={this.addTODO}
             value={event}
           />
         </p>
-        <ul className="time-blocks">{this.renderTimeBlock()}</ul>
-        <table border="true">
+        <ul className="time-blocks" data-time="start">
+          {this.renderTimeBlock(start)}
+        </ul>
+        <ul className="time-blocks" data-time="end">
+          {this.renderTimeBlock(end)}
+        </ul>
+        <table className="app-record__table">
           <tbody>
             <tr>
               <td>{event}</td>
               <td>{start}</td>
+              <td>{end}</td>
             </tr>
           </tbody>
         </table>
+        <div className="app-record__copy" onClick={this.copy.bind(this, event + " " + start + " " + end)}>
+          📋 {copySuccess && "✔"}
+        </div>
       </div>
     );
   }

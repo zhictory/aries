@@ -21,8 +21,32 @@
   cursor: pointer;
 }
 
+.time-block_on {
+  border-color: DarkOrange;
+  color: DarkOrange;
+}
+
 .app-record td {
   padding: 5px;
   border: 1px solid;
-  width: 100px;
+  min-width: 100px;
+}
+
+.app-record__todo {
+  margin: 2px;
+}
+
+.app-record__todo input {
+  padding: 5px;
+}
+
+.app-record__table {
+  float: left;
+}
+
+.app-record__copy {
+  float: left;
+  margin-left: 20px;
+  line-height: 27px;
+  cursor: pointer;
 }
