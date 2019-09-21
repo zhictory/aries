@@ -10,7 +10,10 @@ class Record extends Component {
       event: "Hello World",
       start: "09:00",
       end: "09:00",
-      copySuccess: false
+      publishContent: "sbsm 前端 master 全量",
+      system: "",
+      sha: "",
+      publishTitle: ""
     };
     this.startEveryDay = new Date(
       this.date.getFullYear(),
@@ -82,8 +85,9 @@ class Record extends Component {
     });
   };
 
-  copy = content => {
+  copy = (content, e) => {
     const input = document.createElement("input");
+    const check = e.target.nextElementSibling;
     input.setAttribute("readonly", "readonly");
     input.setAttribute("value", content);
     document.body.appendChild(input);
@@ -91,12 +95,12 @@ class Record extends Component {
     input.setSelectionRange(0, 9999); // 兼容 ios
     if (document.execCommand("copy")) {
       document.execCommand("copy");
-      this.setState({ copySuccess: true });
+      check.style.display = "inline";
       setTimeout(() => {
-        this.setState({ copySuccess: false });
+        check.style.display = "none";
       }, 1000);
     } else {
-      this.setState({ copySuccess: false });
+      check.style.display = "none";
     }
     document.body.removeChild(input);
   };
@@ -119,16 +123,51 @@ class Record extends Component {
       end.split(":")[1],
       0
     );
-    return ((endTime - startTime)/1000/60/60).toFixed(2);
+    return ((endTime - startTime) / 1000 / 60 / 60).toFixed(2);
+  };
+
+  renderSystem = () => {
+    const systems = ["fee", "sbsm", "app"];
+    return systems.map((system, index) => (
+      <option key={index} value={system}>
+        {system}
+      </option>
+    ));
+  };
+
+  handlePublish = () => {
+    const { system, sha, publishTitle } = this.state;
+    this.setState({
+      publishContent: `${publishTitle} ${system} 前端 master ${sha} 全量`
+    });
+  };
+
+  handleSelectSystem = e => {
+    this.setState({ system: e.target.value }, this.handlePublish);
+  };
+
+  handleInputSHA = e => {
+    this.setState({ sha: e.target.value }, this.handlePublish);
+  };
+
+  handleInputTitle = e => {
+    this.setState({ publishTitle: e.target.value }, this.handlePublish);
   };
 
   render() {
-    const { event, start, end, copySuccess } = this.state;
+    const {
+      event,
+      start,
+      end,
+      publishContent,
+      publishTitle,
+      sha
+    } = this.state;
     const during = this.getDuring();
     return (
       <div className="app-record">
         <header>
-          <h1>工作时间模板</h1>
+          <h1>开发时间模板</h1>
         </header>
         <p className="app-record__todo">
           <input
@@ -136,6 +175,7 @@ class Record extends Component {
             onChange={this.updateTODO}
             onKeyPress={this.addTODO}
             value={event}
+            placeholder="需求内容"
           />
         </p>
         <ul className="time-blocks" data-time="start">
@@ -160,11 +200,48 @@ class Record extends Component {
           <span role="img" aria-label="check">
             📋
           </span>{" "}
-          {copySuccess && (
-            <span role="img" aria-label="check">
-              ✔️
-            </span>
-          )}
+          <span role="img" aria-label="check">
+            ✔️
+          </span>
+        </div>
+        <div style={{ clear: "both" }}></div>
+        <header>
+          <h1>发布模板</h1>
+        </header>
+        <div className="app-record__publish">
+          <select name="" id="" onChange={this.handleSelectSystem}>
+            {this.renderSystem()}
+          </select>
+          <input
+            type="text"
+            value={sha}
+            onChange={this.handleInputSHA}
+            placeholder="SHA"
+          />
+          <input
+            type="text"
+            value={publishTitle}
+            onChange={this.handleInputTitle}
+            placeholder="版本名称"
+          />
+        </div>
+        <table className="app-record__table">
+          <tbody>
+            <tr>
+              <td>{publishContent}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div
+          className="app-record__copy"
+          onClick={this.copy.bind(this, publishContent)}
+        >
+          <span role="img" aria-label="check">
+            📋
+          </span>{" "}
+          <span role="img" aria-label="check">
+            ✔️
+          </span>
         </div>
       </div>
     );

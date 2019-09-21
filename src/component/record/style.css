@@ -36,8 +36,10 @@
   margin: 2px;
 }
 
-.app-record__todo input {
+input,
+select {
   padding: 5px;
+  margin-right: 15px;
 }
 
 .app-record__table {
@@ -49,4 +51,12 @@
   margin-left: 20px;
   line-height: 27px;
   cursor: pointer;
+}
+
+.app-record__publish {
+  margin: 20px 0;
+}
+
+[role=img]:last-child {
+  display: none;
 }
