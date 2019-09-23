@@ -27,7 +27,7 @@ class Record extends Component {
       this.date.getFullYear(),
       this.date.getMonth(),
       this.date.getDate(),
-      18,
+      20,
       0,
       0
     ).getTime();
