@@ -10,7 +10,7 @@ class Record extends Component {
       event: "Hello World",
       start: "09:00",
       end: "09:00",
-      publishContent: "sbsm 前端 master 全量",
+      publishContent: "测试，fee前端，master，432902d，全量",
       system: "",
       sha: "",
       publishTitle: ""
@@ -48,11 +48,12 @@ class Record extends Component {
     this.setState({ event: e.target.value });
   };
 
-  renderTimeBlock(currentBlock) {
+  renderTimeBlock(currentBlock, type) {
     let startEveryDay = this.startEveryDay;
     const endEveryDay = this.endEveryDay;
     let date = new Date(startEveryDay);
     const blocks = [];
+    const { start, end } = this.state;
     // 生成可选择的时间块
     while (date.getTime() <= endEveryDay) {
       blocks.push(
@@ -63,22 +64,58 @@ class Record extends Component {
       startEveryDay += 15 * 60 * 1000;
       date = new Date(startEveryDay);
     }
-    return blocks.map((block, index) => (
-      <li
-        key={index}
-        className={
-          "time-block" + (block === currentBlock ? " time-block_on" : "")
-        }
-        onClick={this.handleChooseTime}
-        data-block={block}
-      >
-        {block}
-      </li>
-    ));
+    return blocks.map((block, index) => {
+      const { start, end } = this.state;
+      let disabledClass = "";
+      const startTime = new Date(
+        this.date.getFullYear(),
+        this.date.getMonth(),
+        this.date.getDate(),
+        start.split(":")[0],
+        start.split(":")[1],
+        0
+      );
+      const endTime = new Date(
+        this.date.getFullYear(),
+        this.date.getMonth(),
+        this.date.getDate(),
+        end.split(":")[0],
+        end.split(":")[1],
+        0
+      );
+      const blockTime = new Date(
+        this.date.getFullYear(),
+        this.date.getMonth(),
+        this.date.getDate(),
+        block.split(":")[0],
+        block.split(":")[1],
+        0
+      );
+      if (type === "end") {
+        disabledClass  = blockTime <= startTime ? "disabled" : "";
+      }
+      if (startTime > endTime) {
+        this.setState({ end: start });
+      }
+      return (
+        <li
+          key={index}
+          className={
+            "time-block" +
+            (block === currentBlock ? " time-block_on " : " ") +
+            disabledClass
+          }
+          onClick={disabledClass !== "disabled" && this.handleChooseTime}
+          data-block={block}
+        >
+          {block}
+        </li>
+      );
+    })
   }
 
   handleChooseTime = e => {
-    const type = e.target.parentNode.getAttribute("data-time");
+    const type = e.target.parentElement.getAttribute("data-time");
     const time = e.target.getAttribute("data-block");
     this.setState({
       [type]: time
@@ -138,7 +175,7 @@ class Record extends Component {
   handlePublish = () => {
     const { system, sha, publishTitle } = this.state;
     this.setState({
-      publishContent: `${publishTitle} ${system} 前端 master ${sha} 全量`
+      publishContent: `${publishTitle + (publishTitle ? "，" : "")}${system}前端，master，${sha + (sha ? "，" : "")}全量`
     });
   };
 
@@ -155,14 +192,7 @@ class Record extends Component {
   };
 
   render() {
-    const {
-      event,
-      start,
-      end,
-      publishContent,
-      publishTitle,
-      sha
-    } = this.state;
+    const { event, start, end, publishContent, publishTitle, sha } = this.state;
     const during = this.getDuring();
     return (
       <div className="app-record">
@@ -179,10 +209,10 @@ class Record extends Component {
           />
         </p>
         <ul className="time-blocks" data-time="start">
-          {this.renderTimeBlock(start)}
+          {this.renderTimeBlock(start, "start")}
         </ul>
         <ul className="time-blocks" data-time="end">
-          {this.renderTimeBlock(end)}
+          {this.renderTimeBlock(end, "end")}
         </ul>
         <table className="app-record__table">
           <tbody>

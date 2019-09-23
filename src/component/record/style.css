@@ -21,6 +21,11 @@
   cursor: pointer;
 }
 
+.time-block.disabled {
+  color: #b1b1b1;
+  border-color: #b1b1b1;
+}
+
 .time-block_on {
   border-color: DarkOrange;
   color: DarkOrange;
