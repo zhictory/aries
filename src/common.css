@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 header {
   margin: 40px 0;
 }
@@ -5,4 +9,21 @@ header {
 h1 {
   font-weight: bold;
   font-size: 32px;
+}
+
+input,
+select,
+textarea {
+  padding: 5px;
+  font-size: 14px;
+}
+
+.mv20  {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.mh20  {
+  margin-left: 20px;
+  margin-right: 20px;
 }

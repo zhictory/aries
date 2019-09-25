@@ -10,8 +10,10 @@ class Record extends Component {
       event: "Hello World",
       start: "09:00",
       end: "09:00",
+      developSystem: "fee",
+      developRemark: "",
       publishContent: "测试，fee前端，master，432902d，全量",
-      system: "",
+      system: "fee",
       sha: "",
       publishTitle: ""
     };
@@ -52,8 +54,16 @@ class Record extends Component {
     let startEveryDay = this.startEveryDay;
     const endEveryDay = this.endEveryDay;
     let date = new Date(startEveryDay);
+    const { start } = this.state;
+    const startTime = new Date(
+      this.date.getFullYear(),
+      this.date.getMonth(),
+      this.date.getDate(),
+      start.split(":")[0],
+      start.split(":")[1],
+      0
+    );
     const blocks = [];
-    const { start, end } = this.state;
     // 生成可选择的时间块
     while (date.getTime() <= endEveryDay) {
       blocks.push(
@@ -65,24 +75,7 @@ class Record extends Component {
       date = new Date(startEveryDay);
     }
     return blocks.map((block, index) => {
-      const { start, end } = this.state;
       let disabledClass = "";
-      const startTime = new Date(
-        this.date.getFullYear(),
-        this.date.getMonth(),
-        this.date.getDate(),
-        start.split(":")[0],
-        start.split(":")[1],
-        0
-      );
-      const endTime = new Date(
-        this.date.getFullYear(),
-        this.date.getMonth(),
-        this.date.getDate(),
-        end.split(":")[0],
-        end.split(":")[1],
-        0
-      );
       const blockTime = new Date(
         this.date.getFullYear(),
         this.date.getMonth(),
@@ -92,10 +85,7 @@ class Record extends Component {
         0
       );
       if (type === "end") {
-        disabledClass  = blockTime <= startTime ? "disabled" : "";
-      }
-      if (startTime > endTime) {
-        this.setState({ end: start });
+        disabledClass = blockTime <= startTime ? "disabled" : "";
       }
       return (
         <li
@@ -105,21 +95,47 @@ class Record extends Component {
             (block === currentBlock ? " time-block_on " : " ") +
             disabledClass
           }
-          onClick={disabledClass !== "disabled" && this.handleChooseTime}
+          onClick={
+            disabledClass !== "disabled" ? this.handleChooseTime : undefined
+          }
           data-block={block}
         >
           {block}
         </li>
       );
-    })
+    });
   }
 
   handleChooseTime = e => {
+    const { start, end } = this.state;
+    const startTime = new Date(
+      this.date.getFullYear(),
+      this.date.getMonth(),
+      this.date.getDate(),
+      start.split(":")[0],
+      start.split(":")[1],
+      0
+    );
+    const endTime = new Date(
+      this.date.getFullYear(),
+      this.date.getMonth(),
+      this.date.getDate(),
+      end.split(":")[0],
+      end.split(":")[1],
+      0
+    );
     const type = e.target.parentElement.getAttribute("data-time");
-    const time = e.target.getAttribute("data-block");
-    this.setState({
-      [type]: time
-    });
+    const block = e.target.getAttribute("data-block");
+    if (type === "start" && startTime >= endTime) {
+      this.setState({
+        start: block,
+        end: start
+      });
+    } else {
+      this.setState({
+        [type]: block
+      });
+    }
   };
 
   copy = (content, e) => {
@@ -175,8 +191,18 @@ class Record extends Component {
   handlePublish = () => {
     const { system, sha, publishTitle } = this.state;
     this.setState({
-      publishContent: `${publishTitle + (publishTitle ? "，" : "")}${system}前端，master，${sha + (sha ? "，" : "")}全量`
+      publishContent: `${publishTitle +
+        (publishTitle ? "，" : "")}${system}前端，master，${sha +
+        (sha ? "，" : "")}全量`
     });
+  };
+
+  handleSelectDevelopSystem = e => {
+    this.setState({ developSystem: e.target.value });
+  };
+
+  handleInputRemark = e => {
+    this.setState({ developRemark: e.target.value });
   };
 
   handleSelectSystem = e => {
@@ -192,34 +218,63 @@ class Record extends Component {
   };
 
   render() {
-    const { event, start, end, publishContent, publishTitle, sha } = this.state;
+    const {
+      event,
+      start,
+      end,
+      developSystem,
+      developRemark,
+      publishContent,
+      publishTitle,
+      sha
+    } = this.state;
     const during = this.getDuring();
     return (
       <div className="app-record">
         <header>
           <h1>开发时间模板</h1>
         </header>
-        <p className="app-record__todo">
-          <input
-            type="text"
-            onChange={this.updateTODO}
-            onKeyPress={this.addTODO}
-            value={event}
-            placeholder="需求内容"
-          />
-        </p>
+        <div className="app-record__todo">
+          <div>
+            <input
+              type="text"
+              onChange={this.updateTODO}
+              onKeyPress={this.addTODO}
+              value={event}
+              placeholder="需求内容"
+            />
+          </div>
+          <div>
+            <select name="" id="" onChange={this.handleSelectDevelopSystem}>
+              {this.renderSystem()}
+            </select>
+          </div>
+        </div>
         <ul className="time-blocks" data-time="start">
           {this.renderTimeBlock(start, "start")}
         </ul>
         <ul className="time-blocks" data-time="end">
           {this.renderTimeBlock(end, "end")}
         </ul>
+        <div className="mv20">
+          <textarea
+            name=""
+            id=""
+            cols="30"
+            rows="4"
+            placeholder="备注"
+            onChange={this.handleInputRemark}
+            value={developRemark}
+          ></textarea>
+        </div>
         <table className="app-record__table">
           <tbody>
             <tr>
               <td>{event}</td>
+              <td>{developSystem}</td>
               <td>{start}</td>
               <td>{during}</td>
+              <td>{developRemark}</td>
             </tr>
           </tbody>
         </table>
@@ -239,6 +294,12 @@ class Record extends Component {
           <h1>发布模板</h1>
         </header>
         <div className="app-record__publish">
+          <input
+            type="text"
+            value={publishTitle}
+            onChange={this.handleInputTitle}
+            placeholder="版本名称"
+          />
           <select name="" id="" onChange={this.handleSelectSystem}>
             {this.renderSystem()}
           </select>
@@ -247,12 +308,6 @@ class Record extends Component {
             value={sha}
             onChange={this.handleInputSHA}
             placeholder="SHA"
-          />
-          <input
-            type="text"
-            value={publishTitle}
-            onChange={this.handleInputTitle}
-            placeholder="版本名称"
           />
         </div>
         <table className="app-record__table">
