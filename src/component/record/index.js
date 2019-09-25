@@ -17,6 +17,7 @@ class Record extends Component {
       sha: "",
       publishTitle: ""
     };
+    this.systems = ["fee", "sbsm", "app", "aries", "blog", "snippet", "katana", "dagger", "spider"];
     this.startEveryDay = new Date(
       this.date.getFullYear(),
       this.date.getMonth(),
@@ -107,7 +108,7 @@ class Record extends Component {
   }
 
   handleChooseTime = e => {
-    const { start, end } = this.state;
+    const { end } = this.state;
     const type = e.target.parentElement.getAttribute("data-time");
     const block = e.target.getAttribute("data-block");
     const endTime = new Date(
@@ -203,8 +204,7 @@ class Record extends Component {
   };
 
   renderSystem = () => {
-    const systems = ["fee", "sbsm", "app"];
-    return systems.map((system, index) => (
+    return this.systems.map((system, index) => (
       <option key={index} value={system}>
         {system}
       </option>
