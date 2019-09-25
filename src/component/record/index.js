@@ -158,6 +158,29 @@ class Record extends Component {
     document.body.removeChild(input);
   };
 
+  copyElement = (selector, e) => {
+    const check = e.target.nextElementSibling;
+    const ele = document.querySelector(selector);
+    const newEle = document.createElement("div");
+    newEle.innerHTML = ele.outerHTML;
+    document.body.appendChild(newEle);
+    const selection = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(newEle);
+    selection.removeAllRanges();
+    selection.addRange(range);
+    if (document.execCommand("copy")) {
+      document.execCommand("copy");
+      check.style.display = "inline";
+      setTimeout(() => {
+        check.style.display = "none";
+      }, 1000);
+    } else {
+      check.style.display = "none";
+    }
+    document.body.removeChild(newEle);
+  };
+
   getDuring = () => {
     const { start, end } = this.state;
     const startTime = new Date(
@@ -202,7 +225,9 @@ class Record extends Component {
   };
 
   handleInputRemark = e => {
-    this.setState({ developRemark: e.target.value });
+    this.setState({
+      developRemark: e.target.value
+    });
   };
 
   handleSelectSystem = e => {
@@ -264,23 +289,28 @@ class Record extends Component {
             rows="4"
             placeholder="备注"
             onChange={this.handleInputRemark}
-            value={developRemark}
+            value={developRemark.replace("<br/>", "\n")}
           ></textarea>
         </div>
-        <table className="app-record__table">
+        <table className="app-record__table" id="developContent">
           <tbody>
             <tr>
               <td>{event}</td>
               <td>{developSystem}</td>
               <td>{start}</td>
               <td>{during}</td>
-              <td>{developRemark}</td>
+              <td
+                dangerouslySetInnerHTML={{
+                  __html: developRemark.replace("\n", "<br/>")
+                }}
+              />
             </tr>
           </tbody>
         </table>
         <div
           className="app-record__copy"
-          onClick={this.copy.bind(this, event + " " + start + " " + during)}
+          // onClick={this.copy.bind(this, event + " " + start + " " + during)}
+          onClick={this.copyElement.bind(this, "#developContent")}
         >
           <span role="img" aria-label="check">
             📋
@@ -310,7 +340,7 @@ class Record extends Component {
             placeholder="SHA"
           />
         </div>
-        <table className="app-record__table">
+        <table className="app-record__table" id="publishContent">
           <tbody>
             <tr>
               <td>{publishContent}</td>
@@ -319,7 +349,8 @@ class Record extends Component {
         </table>
         <div
           className="app-record__copy"
-          onClick={this.copy.bind(this, publishContent)}
+          // onClick={this.copy.bind(this, publishContent)}
+          onClick={this.copyElement.bind(this, "#publishContent")}
         >
           <span role="img" aria-label="check">
             📋
