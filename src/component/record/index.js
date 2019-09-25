@@ -108,14 +108,8 @@ class Record extends Component {
 
   handleChooseTime = e => {
     const { start, end } = this.state;
-    const startTime = new Date(
-      this.date.getFullYear(),
-      this.date.getMonth(),
-      this.date.getDate(),
-      start.split(":")[0],
-      start.split(":")[1],
-      0
-    );
+    const type = e.target.parentElement.getAttribute("data-time");
+    const block = e.target.getAttribute("data-block");
     const endTime = new Date(
       this.date.getFullYear(),
       this.date.getMonth(),
@@ -124,12 +118,18 @@ class Record extends Component {
       end.split(":")[1],
       0
     );
-    const type = e.target.parentElement.getAttribute("data-time");
-    const block = e.target.getAttribute("data-block");
-    if (type === "start" && startTime >= endTime) {
+    const blockTime = new Date(
+      this.date.getFullYear(),
+      this.date.getMonth(),
+      this.date.getDate(),
+      block.split(":")[0],
+      block.split(":")[1],
+      0
+    );
+    if (type === "start" && blockTime > endTime) {
       this.setState({
         start: block,
-        end: start
+        end: block
       });
     } else {
       this.setState({
