@@ -47,6 +47,10 @@
   width: 100%;
 }
 
+.app-record__todo select {
+  margin-top: 20px;
+}
+
 .app-record__table {
   float: left;
 }
@@ -69,4 +73,11 @@
 
 [role=img]:last-child {
   display: none;
+}
+
+.app-record__label {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 30px;
+  margin-right: 10px;
 }

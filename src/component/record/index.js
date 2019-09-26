@@ -17,7 +17,7 @@ class Record extends Component {
       sha: "",
       publishTitle: ""
     };
-    this.systems = ["fee", "sbsm", "app", "aries", "blog", "snippet", "katana", "dagger", "spider"];
+    this.systems = ["fee", "sbsm", "app", "aries", "blog", "snippet", "katana", "dagger", "spider", "any"];
     this.startEveryDay = new Date(
       this.date.getFullYear(),
       this.date.getMonth(),
@@ -30,7 +30,7 @@ class Record extends Component {
       this.date.getFullYear(),
       this.date.getMonth(),
       this.date.getDate(),
-      20,
+      22,
       0,
       0
     ).getTime();
@@ -270,14 +270,17 @@ class Record extends Component {
             />
           </div>
           <div>
+            <h6>系统</h6>
             <select name="" id="" onChange={this.handleSelectDevelopSystem}>
               {this.renderSystem()}
             </select>
           </div>
         </div>
+        <h6 className="mv20">开始时间</h6>
         <ul className="time-blocks" data-time="start">
           {this.renderTimeBlock(start, "start")}
         </ul>
+        <h6 className="mv20">结束时间</h6>
         <ul className="time-blocks" data-time="end">
           {this.renderTimeBlock(end, "end")}
         </ul>
