@@ -1,3 +1,7 @@
+# aries
+
+这个项目是搭建在个人云服务器上的项目，使用 Koa + React
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
