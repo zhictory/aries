@@ -15,9 +15,21 @@ class Record extends Component {
       publishContent: "测试，fee前端，master，432902d，全量",
       system: "fee",
       sha: "",
-      publishTitle: ""
+      publishTitle: "",
+      appVersion: ""
     };
-    this.systems = ["fee", "sbsm", "app", "aries", "blog", "snippet", "katana", "dagger", "spider", "any"];
+    this.systems = [
+      "fee",
+      "sbsm",
+      "app",
+      "aries",
+      "blog",
+      "snippet",
+      "katana",
+      "dagger",
+      "spider",
+      "any"
+    ];
     this.startEveryDay = new Date(
       this.date.getFullYear(),
       this.date.getMonth(),
@@ -212,11 +224,11 @@ class Record extends Component {
   };
 
   handlePublish = () => {
-    const { system, sha, publishTitle } = this.state;
+    const { system, sha, publishTitle, appVersion } = this.state;
     this.setState({
       publishContent: `${publishTitle +
         (publishTitle ? "，" : "")}${system}前端，master，${sha +
-        (sha ? "，" : "")}全量`
+        (sha ? "，" : "")}全量${system === "app" ? "，" + appVersion : ""}`
     });
   };
 
@@ -242,6 +254,10 @@ class Record extends Component {
     this.setState({ publishTitle: e.target.value }, this.handlePublish);
   };
 
+  handleInputVersion = e => {
+    this.setState({ appVersion: e.target.value }, this.handlePublish);
+  };
+
   render() {
     const {
       event,
@@ -251,7 +267,9 @@ class Record extends Component {
       developRemark,
       publishContent,
       publishTitle,
-      sha
+      sha,
+      system,
+      appVersion
     } = this.state;
     const during = this.getDuring();
     return (
@@ -342,6 +360,14 @@ class Record extends Component {
             onChange={this.handleInputSHA}
             placeholder="SHA"
           />
+          {system === "app" && (
+            <input
+              type="text"
+              value={appVersion}
+              onChange={this.handleInputVersion}
+              placeholder="APP 版本号"
+            />
+          )}
         </div>
         <table className="app-record__table" id="publishContent">
           <tbody>
