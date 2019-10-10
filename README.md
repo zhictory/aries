@@ -2,6 +2,20 @@
 
 这个项目是搭建在个人云服务器上的项目，使用 Koa + React
 
+## 远程更新脚本
+
+```
+git clone https://github.com/zhictory/aries.git
+
+cd aries
+
+git pull
+
+yarn build
+
+pm2 start server.js
+```
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
