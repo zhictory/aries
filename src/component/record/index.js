@@ -8,6 +8,7 @@ class Record extends Component {
     this.date = new Date();
     this.state = {
       event: "Hello World",
+      predict: "0",
       start: "09:00",
       end: "09:00",
       developSystem: "fee",
@@ -258,10 +259,33 @@ class Record extends Component {
     this.setState({ appVersion: e.target.value }, this.handlePublish);
   };
 
+  renderPredictTimeBlock = () => {
+    const blocks = [];
+    for (let block = 0.25; block <= 2; block+=0.25) {
+
+      blocks.push(
+        <li
+          key={block.toFixed(2)}
+          className="time-block"
+          onClick={this.handleChoosePredictTime}
+          data-block={block.toFixed(2)}
+        >
+          {block.toFixed(2)}
+        </li>
+      )
+    }
+    return blocks;
+  }
+
+  handleChoosePredictTime = e => {
+    this.setState({ predict: e.target.getAttribute("data-block") })
+  }
+
   render() {
     const {
       event,
       start,
+      predict,
       end,
       developSystem,
       developRemark,
@@ -294,6 +318,10 @@ class Record extends Component {
             </select>
           </div>
         </div>
+        <h6 className="mv20">预计开发时长</h6>
+        <ul className="time-blocks" data-time="predict">
+          {this.renderPredictTimeBlock()}
+        </ul>
         <h6 className="mv20">开始时间</h6>
         <ul className="time-blocks" data-time="start">
           {this.renderTimeBlock(start, "start")}
@@ -310,7 +338,7 @@ class Record extends Component {
             rows="4"
             placeholder="备注"
             onChange={this.handleInputRemark}
-            value={developRemark.replace("<br/>", "\n")}
+            value={developRemark}
           ></textarea>
         </div>
         <table className="app-record__table" id="developContent">
@@ -318,11 +346,12 @@ class Record extends Component {
             <tr>
               <td>{event}</td>
               <td>{developSystem}</td>
+              <td>{predict}</td>
               <td>{start}</td>
               <td>{during}</td>
               <td
                 dangerouslySetInnerHTML={{
-                  __html: developRemark.replace("\n", "<br/>")
+                  __html: developRemark.replace(/[\r\n]/g, "<br/>")
                 }}
               />
             </tr>
