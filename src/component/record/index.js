@@ -101,14 +101,11 @@ class Record extends Component {
       if (type === "end") {
         disabledClass = blockTime <= startTime ? "disabled" : "";
       }
+      const blockOnClass = block === currentBlock ? " time-block_on " : " ";
       return (
         <li
           key={index}
-          className={
-            "time-block" +
-            (block === currentBlock ? " time-block_on " : " ") +
-            disabledClass
-          }
+          className={"time-block" + blockOnClass + disabledClass}
           onClick={
             disabledClass !== "disabled" ? this.handleChooseTime : undefined
           }
@@ -124,6 +121,7 @@ class Record extends Component {
     const { end } = this.state;
     const type = e.target.parentElement.getAttribute("data-time");
     const block = e.target.getAttribute("data-block");
+    const isCanceled = e.target.classList.contains("time-block_on");
     const endTime = new Date(
       this.date.getFullYear(),
       this.date.getMonth(),
@@ -140,10 +138,14 @@ class Record extends Component {
       block.split(":")[1],
       0
     );
-    if (type === "start" && blockTime > endTime) {
+    if (isCanceled) {
+      this.setState({
+        [type]: "0:00"
+      });
+    } else if (type === "start" && blockTime > endTime) {
       this.setState({
         start: block,
-        end: block
+        end: "0:00"
       });
     } else {
       this.setState({
@@ -213,7 +215,9 @@ class Record extends Component {
       end.split(":")[1],
       0
     );
-    return ((endTime - startTime) / 1000 / 60 / 60).toFixed(2);
+    return endTime - startTime > 0
+      ? ((endTime - startTime) / 1000 / 60 / 60).toFixed(2)
+      : "0.00";
   };
 
   renderSystem = () => {
@@ -260,26 +264,31 @@ class Record extends Component {
   };
 
   renderPredictTimeBlock = () => {
+    const { predict } = this.state;
     const blocks = [];
-    for (let block = 0.25; block <= 2; block+=0.25) {
-
+    for (let block = 0.25; block <= 2; block += 0.25) {
+      const blockOnClass =
+        block.toFixed(2) === predict ? " time-block_on " : "";
       blocks.push(
         <li
           key={block.toFixed(2)}
-          className="time-block"
+          className={"time-block" + blockOnClass}
           onClick={this.handleChoosePredictTime}
           data-block={block.toFixed(2)}
         >
           {block.toFixed(2)}
         </li>
-      )
+      );
     }
     return blocks;
-  }
+  };
 
   handleChoosePredictTime = e => {
-    this.setState({ predict: e.target.getAttribute("data-block") })
-  }
+    const isCanceled = e.target.classList.contains("time-block_on");
+    isCanceled
+      ? this.setState({ predict: "0.00" })
+      : this.setState({ predict: e.target.getAttribute("data-block") });
+  };
 
   render() {
     const {
@@ -359,7 +368,6 @@ class Record extends Component {
         </table>
         <div
           className="app-record__copy"
-          // onClick={this.copy.bind(this, event + " " + start + " " + during)}
           onClick={this.copyElement.bind(this, "#developContent")}
         >
           <span role="img" aria-label="check">
