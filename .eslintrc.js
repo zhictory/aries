@@ -23,6 +23,7 @@ module.exports = {
   },
   plugins: ["react"],
   rules: {
-    "prettier/prettier": "error"
+    "prettier/prettier": 2,
+    "no-debugger": 1
   }
 };
