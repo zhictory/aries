@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import Record from "./component/record";
-import Rank from "./component/rank";
+// import Rank from "./component/rank";
 
 function App() {
   return (
