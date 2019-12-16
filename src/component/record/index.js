@@ -308,6 +308,54 @@ class Record extends Component {
     return (
       <div className="app-record">
         <header>
+          <h1>发布模板</h1>
+        </header>
+        <div className="app-record__publish">
+          <input
+            type="text"
+            value={publishTitle}
+            onChange={this.handleInputTitle}
+            placeholder="版本名称"
+          />
+          <select name="" id="" onChange={this.handleSelectSystem}>
+            {this.renderSystem()}
+          </select>
+          <input
+            type="text"
+            value={sha}
+            onChange={this.handleInputSHA}
+            placeholder="SHA"
+          />
+          {system === "app" && (
+            <input
+              type="text"
+              value={appVersion}
+              onChange={this.handleInputVersion}
+              placeholder="APP 版本号"
+            />
+          )}
+        </div>
+        <table className="app-record__table" id="publishContent">
+          <tbody>
+            <tr>
+              <td>{publishContent}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div
+          className="app-record__copy"
+          // onClick={this.copy.bind(this, publishContent)}
+          onClick={this.copyElement.bind(this, "#publishContent")}
+        >
+          <span role="img" aria-label="check">
+            📋
+          </span>{" "}
+          <span role="img" aria-label="check">
+            ✔️
+          </span>
+        </div>
+        <div style={{ clear: "both" }}></div>
+        <header>
           <h1>开发时间模板</h1>
         </header>
         <div className="app-record__todo">
@@ -378,53 +426,6 @@ class Record extends Component {
           </span>
         </div>
         <div style={{ clear: "both" }}></div>
-        <header>
-          <h1>发布模板</h1>
-        </header>
-        <div className="app-record__publish">
-          <input
-            type="text"
-            value={publishTitle}
-            onChange={this.handleInputTitle}
-            placeholder="版本名称"
-          />
-          <select name="" id="" onChange={this.handleSelectSystem}>
-            {this.renderSystem()}
-          </select>
-          <input
-            type="text"
-            value={sha}
-            onChange={this.handleInputSHA}
-            placeholder="SHA"
-          />
-          {system === "app" && (
-            <input
-              type="text"
-              value={appVersion}
-              onChange={this.handleInputVersion}
-              placeholder="APP 版本号"
-            />
-          )}
-        </div>
-        <table className="app-record__table" id="publishContent">
-          <tbody>
-            <tr>
-              <td>{publishContent}</td>
-            </tr>
-          </tbody>
-        </table>
-        <div
-          className="app-record__copy"
-          // onClick={this.copy.bind(this, publishContent)}
-          onClick={this.copyElement.bind(this, "#publishContent")}
-        >
-          <span role="img" aria-label="check">
-            📋
-          </span>{" "}
-          <span role="img" aria-label="check">
-            ✔️
-          </span>
-        </div>
       </div>
     );
   }
