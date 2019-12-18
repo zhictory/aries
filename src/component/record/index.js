@@ -20,16 +20,16 @@ class Record extends Component {
       appVersion: ""
     };
     this.systems = [
+      "ibs",
       "fee",
       "sbsm",
       "app",
       "aries",
       "blog",
-      "snippet",
+      "taurus",
       "katana",
       "dagger",
-      "spider",
-      "any"
+      "other"
     ];
     this.startEveryDay = new Date(
       this.date.getFullYear(),
