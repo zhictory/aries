@@ -19,13 +19,7 @@ class Record extends Component {
       publishTitle: "",
       appVersion: ""
     };
-    this.systems = [
-      "erp",
-      "app",
-      "ibs",
-      "sbsm",
-      "fee",
-    ];
+    this.systems = ["erp", "app", "ibs", "sbsm", "fee"];
     this.startEveryDay = new Date(
       this.date.getFullYear(),
       this.date.getMonth(),
