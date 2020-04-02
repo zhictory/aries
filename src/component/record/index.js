@@ -11,10 +11,10 @@ class Record extends Component {
       predict: "0",
       start: "09:00",
       end: "09:00",
-      developSystem: "fee",
+      developSystem: "erp",
       developRemark: "",
-      publishContent: "测试，fee前端，master，432902d，全量",
-      system: "fee",
+      publishContent: "测试，erp前端，master，432902d，全量",
+      system: "erp",
       sha: "",
       publishTitle: "",
       appVersion: ""
