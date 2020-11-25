@@ -3,9 +3,6 @@ import { Link } from "react-router-dom";
 import "./style.css";
 
 class Home extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     return (
       <ul className="home">
@@ -17,6 +14,9 @@ class Home extends React.Component {
         </li>
         <li>
           <Link to="/rank">Rank</Link>
+        </li>
+        <li>
+          <Link to="/language">Language</Link>
         </li>
       </ul>
     );
