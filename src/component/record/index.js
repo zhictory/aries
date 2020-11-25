@@ -1,32 +1,32 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import "./style.css";
+import './style.css';
 
 class Record extends Component {
   constructor(props) {
     super(props);
     this.date = new Date();
     this.state = {
-      event: "Hello World",
-      predict: "0",
-      start: "09:00",
-      end: "09:00",
-      developSystem: "erp",
-      developRemark: "",
-      publishContent: "测试，erp前端，master，432902d，全量",
-      system: "erp",
-      sha: "",
-      publishTitle: "",
-      appVersion: ""
+      event: 'Hello World',
+      predict: '0',
+      start: '09:00',
+      end: '09:00',
+      developSystem: 'erp',
+      developRemark: '',
+      publishContent: '测试，erp前端，master，432902d，全量',
+      system: 'erp',
+      sha: '',
+      publishTitle: '',
+      appVersion: '',
     };
-    this.systems = ["erp", "app", "ibs", "sbsm", "fee"];
+    this.systems = ['erp', 'app', 'ibs', 'sbsm', 'fee'];
     this.startEveryDay = new Date(
       this.date.getFullYear(),
       this.date.getMonth(),
       this.date.getDate(),
       9,
       0,
-      0
+      0,
     ).getTime();
     this.endEveryDay = new Date(
       this.date.getFullYear(),
@@ -34,7 +34,7 @@ class Record extends Component {
       this.date.getDate(),
       22,
       0,
-      0
+      0,
     ).getTime();
   }
 
@@ -42,9 +42,9 @@ class Record extends Component {
     if (e.charCode === 13) {
       const date = new Date();
       this.setState({
-        start: `${date.getHours() < 10 ? "0" : ""}${date.getHours()}:${
-          date.getMinutes() < 10 ? "0" : ""
-        }${date.getMinutes()}`
+        start: `${date.getHours() < 10 ? '0' : ''}${date.getHours()}:${
+          date.getMinutes() < 10 ? '0' : ''
+        }${date.getMinutes()}`,
       });
     }
   };
@@ -62,42 +62,40 @@ class Record extends Component {
       this.date.getFullYear(),
       this.date.getMonth(),
       this.date.getDate(),
-      start.split(":")[0],
-      start.split(":")[1],
-      0
+      start.split(':')[0],
+      start.split(':')[1],
+      0,
     );
     const blocks = [];
     // 生成可选择的时间块
     while (date.getTime() <= endEveryDay) {
       blocks.push(
-        `${(date.getHours() < 10 ? "0" : "") +
-          date.getHours()}:${(date.getMinutes() < 10 ? "0" : "") +
-          date.getMinutes()}`
+        `${(date.getHours() < 10 ? '0' : '') + date.getHours()}:${(date.getMinutes() < 10
+          ? '0'
+          : '') + date.getMinutes()}`,
       );
       startEveryDay += 15 * 60 * 1000;
       date = new Date(startEveryDay);
     }
     return blocks.map((block, index) => {
-      let disabledClass = "";
+      let disabledClass = '';
       const blockTime = new Date(
         this.date.getFullYear(),
         this.date.getMonth(),
         this.date.getDate(),
-        block.split(":")[0],
-        block.split(":")[1],
-        0
+        block.split(':')[0],
+        block.split(':')[1],
+        0,
       );
-      if (type === "end") {
-        disabledClass = blockTime <= startTime ? "disabled" : "";
+      if (type === 'end') {
+        disabledClass = blockTime <= startTime ? 'disabled' : '';
       }
-      const blockOnClass = block === currentBlock ? " time-block_on " : " ";
+      const blockOnClass = block === currentBlock ? ' time-block_on ' : ' ';
       return (
         <li
           key={index}
-          className={"time-block" + blockOnClass + disabledClass}
-          onClick={
-            disabledClass !== "disabled" ? this.handleChooseTime : undefined
-          }
+          className={'time-block' + blockOnClass + disabledClass}
+          onClick={disabledClass !== 'disabled' ? this.handleChooseTime : undefined}
           data-block={block}
         >
           {block}
@@ -108,57 +106,57 @@ class Record extends Component {
 
   handleChooseTime = e => {
     const { end } = this.state;
-    const type = e.target.parentElement.getAttribute("data-time");
-    const block = e.target.getAttribute("data-block");
-    const isCanceled = e.target.classList.contains("time-block_on");
+    const type = e.target.parentElement.getAttribute('data-time');
+    const block = e.target.getAttribute('data-block');
+    const isCanceled = e.target.classList.contains('time-block_on');
     const endTime = new Date(
       this.date.getFullYear(),
       this.date.getMonth(),
       this.date.getDate(),
-      end.split(":")[0],
-      end.split(":")[1],
-      0
+      end.split(':')[0],
+      end.split(':')[1],
+      0,
     );
     const blockTime = new Date(
       this.date.getFullYear(),
       this.date.getMonth(),
       this.date.getDate(),
-      block.split(":")[0],
-      block.split(":")[1],
-      0
+      block.split(':')[0],
+      block.split(':')[1],
+      0,
     );
     if (isCanceled) {
       this.setState({
-        [type]: "0:00"
+        [type]: '0:00',
       });
-    } else if (type === "start" && blockTime > endTime) {
+    } else if (type === 'start' && blockTime > endTime) {
       this.setState({
         start: block,
-        end: "0:00"
+        end: '0:00',
       });
     } else {
       this.setState({
-        [type]: block
+        [type]: block,
       });
     }
   };
 
   copy = (content, e) => {
-    const input = document.createElement("input");
+    const input = document.createElement('input');
     const check = e.target.nextElementSibling;
-    input.setAttribute("readonly", "readonly");
-    input.setAttribute("value", content);
+    input.setAttribute('readonly', 'readonly');
+    input.setAttribute('value', content);
     document.body.appendChild(input);
     input.select(); // 兼容 pc
     input.setSelectionRange(0, 9999); // 兼容 ios
-    if (document.execCommand("copy")) {
-      document.execCommand("copy");
-      check.style.display = "inline";
+    if (document.execCommand('copy')) {
+      document.execCommand('copy');
+      check.style.display = 'inline';
       setTimeout(() => {
-        check.style.display = "none";
+        check.style.display = 'none';
       }, 1000);
     } else {
-      check.style.display = "none";
+      check.style.display = 'none';
     }
     document.body.removeChild(input);
   };
@@ -166,7 +164,7 @@ class Record extends Component {
   copyElement = (selector, e) => {
     const check = e.target.nextElementSibling;
     const ele = document.querySelector(selector);
-    const newEle = document.createElement("div");
+    const newEle = document.createElement('div');
     newEle.innerHTML = ele.outerHTML;
     document.body.appendChild(newEle);
     const selection = window.getSelection();
@@ -174,14 +172,14 @@ class Record extends Component {
     range.selectNodeContents(newEle);
     selection.removeAllRanges();
     selection.addRange(range);
-    if (document.execCommand("copy")) {
-      document.execCommand("copy");
-      check.style.display = "inline";
+    if (document.execCommand('copy')) {
+      document.execCommand('copy');
+      check.style.display = 'inline';
       setTimeout(() => {
-        check.style.display = "none";
+        check.style.display = 'none';
       }, 1000);
     } else {
-      check.style.display = "none";
+      check.style.display = 'none';
     }
     document.body.removeChild(newEle);
   };
@@ -192,21 +190,19 @@ class Record extends Component {
       this.date.getFullYear(),
       this.date.getMonth(),
       this.date.getDate(),
-      start.split(":")[0],
-      start.split(":")[1],
-      0
+      start.split(':')[0],
+      start.split(':')[1],
+      0,
     );
     const endTime = new Date(
       this.date.getFullYear(),
       this.date.getMonth(),
       this.date.getDate(),
-      end.split(":")[0],
-      end.split(":")[1],
-      0
+      end.split(':')[0],
+      end.split(':')[1],
+      0,
     );
-    return endTime - startTime > 0
-      ? ((endTime - startTime) / 1000 / 60 / 60).toFixed(2)
-      : "0.00";
+    return endTime - startTime > 0 ? ((endTime - startTime) / 1000 / 60 / 60).toFixed(2) : '0.00';
   };
 
   renderSystem = () => {
@@ -220,9 +216,8 @@ class Record extends Component {
   handlePublish = () => {
     const { system, sha, publishTitle, appVersion } = this.state;
     this.setState({
-      publishContent: `${publishTitle +
-        (publishTitle ? "，" : "")}${system}前端，master，${sha +
-        (sha ? "，" : "")}全量${system === "app" ? "，" + appVersion : ""}`
+      publishContent: `${publishTitle + (publishTitle ? '，' : '')}${system}前端，master，${sha +
+        (sha ? '，' : '')}全量${system === 'app' ? '，' + appVersion : ''}`,
     });
   };
 
@@ -232,7 +227,7 @@ class Record extends Component {
 
   handleInputRemark = e => {
     this.setState({
-      developRemark: e.target.value
+      developRemark: e.target.value,
     });
   };
 
@@ -256,27 +251,26 @@ class Record extends Component {
     const { predict } = this.state;
     const blocks = [];
     for (let block = 0.25; block <= 2; block += 0.25) {
-      const blockOnClass =
-        block.toFixed(2) === predict ? " time-block_on " : "";
+      const blockOnClass = block.toFixed(2) === predict ? ' time-block_on ' : '';
       blocks.push(
         <li
           key={block.toFixed(2)}
-          className={"time-block" + blockOnClass}
+          className={'time-block' + blockOnClass}
           onClick={this.handleChoosePredictTime}
           data-block={block.toFixed(2)}
         >
           {block.toFixed(2)}
-        </li>
+        </li>,
       );
     }
     return blocks;
   };
 
   handleChoosePredictTime = e => {
-    const isCanceled = e.target.classList.contains("time-block_on");
+    const isCanceled = e.target.classList.contains('time-block_on');
     isCanceled
-      ? this.setState({ predict: "0.00" })
-      : this.setState({ predict: e.target.getAttribute("data-block") });
+      ? this.setState({ predict: '0.00' })
+      : this.setState({ predict: e.target.getAttribute('data-block') });
   };
 
   render() {
@@ -291,7 +285,7 @@ class Record extends Component {
       publishTitle,
       sha,
       system,
-      appVersion
+      appVersion,
     } = this.state;
     const during = this.getDuring();
     return (
@@ -309,13 +303,8 @@ class Record extends Component {
           <select name="" id="" onChange={this.handleSelectSystem}>
             {this.renderSystem()}
           </select>
-          <input
-            type="text"
-            value={sha}
-            onChange={this.handleInputSHA}
-            placeholder="SHA"
-          />
-          {system === "app" && (
+          <input type="text" value={sha} onChange={this.handleInputSHA} placeholder="SHA" />
+          {system === 'app' && (
             <input
               type="text"
               value={appVersion}
@@ -334,16 +323,16 @@ class Record extends Component {
         <div
           className="app-record__copy"
           // onClick={this.copy.bind(this, publishContent)}
-          onClick={this.copyElement.bind(this, "#publishContent")}
+          onClick={this.copyElement.bind(this, '#publishContent')}
         >
           <span role="img" aria-label="check">
             📋
-          </span>{" "}
+          </span>{' '}
           <span role="img" aria-label="check">
             ✔️
           </span>
         </div>
-        <div style={{ clear: "both" }}></div>
+        <div style={{ clear: 'both' }}></div>
         <header>
           <h1>开发时间模板</h1>
         </header>
@@ -370,11 +359,11 @@ class Record extends Component {
         </ul>
         <h6 className="mv20">开始时间</h6>
         <ul className="time-blocks" data-time="start">
-          {this.renderTimeBlock(start, "start")}
+          {this.renderTimeBlock(start, 'start')}
         </ul>
         <h6 className="mv20">结束时间</h6>
         <ul className="time-blocks" data-time="end">
-          {this.renderTimeBlock(end, "end")}
+          {this.renderTimeBlock(end, 'end')}
         </ul>
         <div className="mv20">
           <textarea
@@ -397,24 +386,21 @@ class Record extends Component {
               <td>{during}</td>
               <td
                 dangerouslySetInnerHTML={{
-                  __html: developRemark.replace(/[\r\n]/g, "<br/>")
+                  __html: developRemark.replace(/[\r\n]/g, '<br/>'),
                 }}
               />
             </tr>
           </tbody>
         </table>
-        <div
-          className="app-record__copy"
-          onClick={this.copyElement.bind(this, "#developContent")}
-        >
+        <div className="app-record__copy" onClick={this.copyElement.bind(this, '#developContent')}>
           <span role="img" aria-label="check">
             📋
-          </span>{" "}
+          </span>{' '}
           <span role="img" aria-label="check">
             ✔️
           </span>
         </div>
-        <div style={{ clear: "both" }}></div>
+        <div style={{ clear: 'both' }}></div>
       </div>
     );
   }
