@@ -1,24 +1,26 @@
-ul {
+.language ul {
   margin-top: 20px;
 }
 
-li {
+.language li {
   margin: 10px;
 }
 
-li span {
+.language li span {
   display: inline-block;
   border: 1px solid #ccc;
   margin-right: 10px;
   padding: 5px;
   cursor: pointer;
+  width: 500px;
+  vertical-align: top;
 }
 
-li span:hover {
+.language li span:hover {
   background: #f5f3f2;
 }
 
-.form-control {
+.language .form-control {
   position: sticky;
   top: 0;
   padding: 10px;
@@ -27,6 +29,6 @@ li span:hover {
   box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.35);
 }
 
-.form-control input {
+.language .form-control input {
   margin-right: 10px;
 }

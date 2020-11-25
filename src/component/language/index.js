@@ -59,7 +59,7 @@ class Language extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="language">
         <div className="form-control">
           <input placeholder="key" type="text" onChange={this.onKeyChange} />
           <input placeholder="value" type="text" onChange={this.onValueChange} />
