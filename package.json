@@ -18,7 +18,9 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -36,12 +38,20 @@
     ]
   },
   "devDependencies": {
-    "prettier": "^1.18.2",
+    "@babel/core": "^7.12.9",
+    "@storybook/addon-actions": "^6.1.10",
+    "@storybook/addon-essentials": "^6.1.10",
+    "@storybook/addon-links": "^6.1.10",
+    "@storybook/node-logger": "^6.1.10",
+    "@storybook/preset-create-react-app": "^3.1.5",
+    "@storybook/react": "^6.1.10",
     "babel-eslint": "^10.0.3",
+    "babel-loader": "8.0.6",
+    "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.4.0",
     "eslint-loader": "^3.0.2",
     "eslint-plugin-prettier": "^3.1.1",
-    "eslint": "^6.5.1",
-    "eslint-plugin-react": "^7.16.0"
+    "eslint-plugin-react": "^7.16.0",
+    "prettier": "^1.18.2"
   }
 }
