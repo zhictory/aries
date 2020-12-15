@@ -13,6 +13,7 @@ class Language extends React.Component {
     this.state = {
       filterList: [],
       search: { key: '', value: '' },
+      loading: false,
     };
     this.langList = [];
     this.langPackage = {};
@@ -21,6 +22,10 @@ class Language extends React.Component {
   componentDidMount() {}
 
   getLangPackage = type => {
+    if (this.state.loading) {
+      return false;
+    }
+
     const url = {
       erp: '/erp/getLangPackage',
       oa3: '/oa3/getLangPackage',
@@ -32,7 +37,7 @@ class Language extends React.Component {
       this.setState({ filterList: this.langPackage[type] });
     } else {
       this.langList = [];
-      this.setState({ filterList: this.langList });
+      this.setState({ filterList: this.langList, loading: true });
       axios
         .get(url[type])
         .then(resp => {
@@ -43,10 +48,11 @@ class Language extends React.Component {
             this.langList.push({ key, value: data[key] });
           }
           this.langPackage[type] = this.langList;
-          this.setState({ filterList: this.langList });
+          this.setState({ filterList: this.langList, loading: false });
         })
         .catch(error => {
           console.log(error);
+          this.setState({ loading: false });
         });
     }
   };
