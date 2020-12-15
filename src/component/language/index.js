@@ -15,6 +15,7 @@ class Language extends React.Component {
       search: { key: '', value: '' },
     };
     this.langList = [];
+    this.langPackage = {};
   }
 
   componentDidMount() {}
@@ -38,8 +39,9 @@ class Language extends React.Component {
           resp['data']['response_data']['lang_package'];
         for (const key in data) {
           this.langList.push({ key, value: data[key] });
-          this.setState({ filterList: this.langList });
         }
+        this.langPackage[type] = this.langList;
+        this.setState({ filterList: this.langList });
       })
       .catch(error => {
         console.log(error);
