@@ -21,10 +21,10 @@ class Language extends React.Component {
 
   getLangPackage = type => {
     const url = {
-      erp: '//localhost:5120/erp/getLangPackage',
-      oa3: '//localhost:5120/oa3/getLangPackage',
-      app: '//localhost:5120/app/getLangPackage',
-      ibs: '//localhost:5120/ibs/getLangPackage',
+      erp: '/erp/getLangPackage',
+      oa3: '/oa3/getLangPackage',
+      app: '/app/getLangPackage',
+      ibs: '/ibs/getLangPackage',
     };
 
     this.langList = [];
