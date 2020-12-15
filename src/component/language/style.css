@@ -1,12 +1,12 @@
-.language ul {
+.language > ul {
   margin-top: 20px;
 }
 
-.language li {
+.language > ul li {
   margin: 10px;
 }
 
-.language li span {
+.language > ul li span {
   display: inline-block;
   border: 1px solid #ccc;
   margin-right: 10px;
@@ -14,9 +14,10 @@
   cursor: pointer;
   width: 500px;
   vertical-align: top;
+  word-break: break-all;
 }
 
-.language li span:hover {
+.language > ul li span:hover {
   background: #f5f3f2;
 }
 
@@ -31,4 +32,17 @@
 
 .language .form-control input {
   margin-right: 10px;
+}
+
+.language .form-control ul {
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.language .form-control ul li {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
 }

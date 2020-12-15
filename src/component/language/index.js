@@ -1,7 +1,7 @@
 import React from 'react';
 // import PropTypes from "prop-types";
-import lang from './lang.json';
 import './style.css';
+import axios from 'axios';
 
 class Language extends React.Component {
   static propTypes = {};
@@ -12,16 +12,39 @@ class Language extends React.Component {
     super(props);
     this.state = {
       filterList: [],
+      search: { key: '', value: '' },
     };
     this.langList = [];
-    for (const key in lang) {
-      this.langList.push({ key, value: lang[key] });
-    }
   }
 
-  componentDidMount() {
+  componentDidMount() {}
+
+  getLangPackage = type => {
+    const url = {
+      erp: '//localhost:5120/erp/getLangPackage',
+      oa3: '//localhost:5120/oa3/getLangPackage',
+      app: '//localhost:5120/app/getLangPackage',
+      ibs: '//localhost:5120/ibs/getLangPackage',
+    };
+
+    this.langList = [];
     this.setState({ filterList: this.langList });
-  }
+
+    axios
+      .get(url[type])
+      .then(resp => {
+        const data =
+          resp['data']['response_data']['langPackage'] ||
+          resp['data']['response_data']['lang_package'];
+        for (const key in data) {
+          this.langList.push({ key, value: data[key] });
+          this.setState({ filterList: this.langList });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   onKeyChange = evt => {
     const value = evt.target.value.toLowerCase();
@@ -29,7 +52,7 @@ class Language extends React.Component {
       const key = item['key'].toLowerCase();
       return key.includes(value);
     });
-    this.setState({ filterList });
+    this.setState({ filterList, search: { key: value, value: '' } });
   };
 
   onValueChange = evt => {
@@ -38,7 +61,12 @@ class Language extends React.Component {
       const key = item['value'].toLowerCase();
       return key.includes(value);
     });
-    this.setState({ filterList });
+    this.setState({ filterList, search: { key: '', value } });
+  };
+
+  onRadioChange = evt => {
+    const value = evt.target.value;
+    this.getLangPackage(value);
   };
 
   copy = (content, evt) => {
@@ -61,8 +89,36 @@ class Language extends React.Component {
     return (
       <div className="language">
         <div className="form-control">
-          <input placeholder="key" type="text" onChange={this.onKeyChange} />
-          <input placeholder="value" type="text" onChange={this.onValueChange} />
+          <input
+            placeholder="key"
+            type="text"
+            onChange={this.onKeyChange}
+            value={this.state['search']['key']}
+          />
+          <input
+            placeholder="value"
+            type="text"
+            onChange={this.onValueChange}
+            value={this.state['search']['value']}
+          />
+          <ul>
+            <li>
+              <input type="radio" name="langType" value="erp" onChange={this.onRadioChange} />
+              <span>ERP</span>
+            </li>
+            <li>
+              <input type="radio" name="langType" value="app" onChange={this.onRadioChange} />
+              <span>APP</span>
+            </li>
+            <li>
+              <input type="radio" name="langType" value="oa3" onChange={this.onRadioChange} />
+              <span>OA3</span>
+            </li>
+            <li>
+              <input type="radio" name="langType" value="ibs" onChange={this.onRadioChange} />
+              <span>IBS</span>
+            </li>
+          </ul>
         </div>
         <ul>
           {this.state.filterList.map(item => (

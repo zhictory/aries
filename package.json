@@ -4,6 +4,8 @@
   "private": true,
   "homepage": "http://117.78.7.41",
   "dependencies": {
+    "@koa/router": "^10.0.0",
+    "axios": "^0.21.0",
     "koa": "^2.8.1",
     "koa-static": "^5.0.0",
     "normalize.css": "^8.0.1",
