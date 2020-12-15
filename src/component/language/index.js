@@ -32,7 +32,7 @@ class Language extends React.Component {
       this.setState({ filterList: this.langPackage[type] });
     } else {
       this.langList = [];
-      this.setState({ filterList: this.langPackage[type] });
+      this.setState({ filterList: this.langList });
       axios
         .get(url[type])
         .then(resp => {
@@ -43,7 +43,7 @@ class Language extends React.Component {
             this.langList.push({ key, value: data[key] });
           }
           this.langPackage[type] = this.langList;
-          this.setState({ filterList: this.langPackage[type] });
+          this.setState({ filterList: this.langList });
         })
         .catch(error => {
           console.log(error);
