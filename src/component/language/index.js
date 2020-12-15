@@ -28,24 +28,27 @@ class Language extends React.Component {
       ibs: '/ibs/getLangPackage',
     };
 
-    this.langList = [];
-    this.setState({ filterList: this.langList });
-
-    axios
-      .get(url[type])
-      .then(resp => {
-        const data =
-          resp['data']['response_data']['langPackage'] ||
-          resp['data']['response_data']['lang_package'];
-        for (const key in data) {
-          this.langList.push({ key, value: data[key] });
-        }
-        this.langPackage[type] = this.langList;
-        this.setState({ filterList: this.langList });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    if (this.langPackage[type]) {
+      this.setState({ filterList: this.langPackage[type] });
+    } else {
+      this.langList = [];
+      this.setState({ filterList: this.langPackage[type] });
+      axios
+        .get(url[type])
+        .then(resp => {
+          const data =
+            resp['data']['response_data']['langPackage'] ||
+            resp['data']['response_data']['lang_package'];
+          for (const key in data) {
+            this.langList.push({ key, value: data[key] });
+          }
+          this.langPackage[type] = this.langList;
+          this.setState({ filterList: this.langPackage[type] });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
   };
 
   onKeyChange = evt => {
