@@ -10,13 +10,13 @@ class Home extends React.Component {
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="/record">Record</Link>
+          <Link to="/tool/record">Record</Link>
         </li>
         <li>
-          <Link to="/rank">Rank</Link>
+          <Link to="/tool/rank">Rank</Link>
         </li>
         <li>
-          <Link to="/language">Language</Link>
+          <Link to="/tool/language">Language</Link>
         </li>
       </ul>
     );

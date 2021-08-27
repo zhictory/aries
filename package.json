@@ -4,7 +4,9 @@
   "private": true,
   "homepage": "http://117.78.7.41",
   "dependencies": {
+    "@babel/plugin-transform-typescript": "^7.15.0",
     "@koa/router": "^10.0.0",
+    "@types/react-dom": "^17.0.9",
     "axios": "^0.21.0",
     "koa": "^2.8.1",
     "koa-static": "^5.0.0",
@@ -47,6 +49,8 @@
     "@storybook/node-logger": "^6.1.10",
     "@storybook/preset-create-react-app": "^3.1.5",
     "@storybook/react": "^6.1.10",
+    "@types/react-router-dom": "^5.1.8",
+    "@typescript-eslint/eslint-plugin": "^4.29.3",
     "babel-eslint": "^10.0.3",
     "babel-loader": "8.0.6",
     "eslint": "^6.5.1",
@@ -54,6 +58,8 @@
     "eslint-loader": "^3.0.2",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.16.0",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "ts-loader": "8.2.0",
+    "typescript": "^4.4.2"
   }
 }

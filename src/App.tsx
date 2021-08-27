@@ -4,20 +4,20 @@ import Home from './component/home';
 import Record from './component/record';
 import Rank from './component/rank';
 import Language from './component/language';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <div>
         <Switch>
-          <Route path="/language">
+          <Route path="/tool/language">
             <Language />
           </Route>
-          <Route path="/record">
+          <Route path="/tool/record">
             <Record />
           </Route>
-          <Route path="/rank">
+          <Route path="/tool/rank">
             <Rank />
           </Route>
           <Route path="/">
@@ -25,7 +25,7 @@ function App() {
           </Route>
         </Switch>
       </div>
-    </Router>
+    </BrowserRouter>
   );
 }
 

@@ -13,7 +13,7 @@ class Language extends React.Component {
     this.state = {
       filterList: [],
       search: { key: '', value: '' },
-      loading: false,
+      loading: false
     };
     this.langList = [];
     this.langPackage = {};
@@ -30,7 +30,7 @@ class Language extends React.Component {
       erp: '/erp/getLangPackage',
       oa3: '/oa3/getLangPackage',
       app: '/app/getLangPackage',
-      ibs: '/ibs/getLangPackage',
+      ibs: '/ibs/getLangPackage'
     };
 
     if (this.langPackage[type]) {
@@ -41,9 +41,7 @@ class Language extends React.Component {
       axios
         .get(url[type])
         .then(resp => {
-          const data =
-            resp['data']['response_data']['langPackage'] ||
-            resp['data']['response_data']['lang_package'];
+          const data = resp['data']['response_data']['langPackage'] || resp['data']['response_data']['lang_package'];
           for (const key in data) {
             this.langList.push({ key, value: data[key] });
           }
@@ -100,18 +98,8 @@ class Language extends React.Component {
     return (
       <div className="language">
         <div className="form-control">
-          <input
-            placeholder="key"
-            type="text"
-            onChange={this.onKeyChange}
-            value={this.state['search']['key']}
-          />
-          <input
-            placeholder="value"
-            type="text"
-            onChange={this.onValueChange}
-            value={this.state['search']['value']}
-          />
+          <input placeholder="key" type="text" onChange={this.onKeyChange} value={this.state['search']['key']} />
+          <input placeholder="value" type="text" onChange={this.onValueChange} value={this.state['search']['value']} />
           <ul>
             <li>
               <input type="radio" name="langType" value="erp" onChange={this.onRadioChange} />

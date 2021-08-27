@@ -17,7 +17,7 @@ class Record extends Component {
       system: 'erp',
       sha: '',
       publishTitle: '',
-      appVersion: '',
+      appVersion: ''
     };
     this.systems = ['erp', 'app', 'ibs', 'sbsm', 'fee'];
     this.startEveryDay = new Date(
@@ -26,16 +26,9 @@ class Record extends Component {
       this.date.getDate(),
       9,
       0,
-      0,
+      0
     ).getTime();
-    this.endEveryDay = new Date(
-      this.date.getFullYear(),
-      this.date.getMonth(),
-      this.date.getDate(),
-      22,
-      0,
-      0,
-    ).getTime();
+    this.endEveryDay = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate(), 22, 0, 0).getTime();
   }
 
   addTODO = e => {
@@ -44,7 +37,7 @@ class Record extends Component {
       this.setState({
         start: `${date.getHours() < 10 ? '0' : ''}${date.getHours()}:${
           date.getMinutes() < 10 ? '0' : ''
-        }${date.getMinutes()}`,
+        }${date.getMinutes()}`
       });
     }
   };
@@ -64,15 +57,14 @@ class Record extends Component {
       this.date.getDate(),
       start.split(':')[0],
       start.split(':')[1],
-      0,
+      0
     );
     const blocks = [];
     // 生成可选择的时间块
     while (date.getTime() <= endEveryDay) {
       blocks.push(
-        `${(date.getHours() < 10 ? '0' : '') + date.getHours()}:${(date.getMinutes() < 10
-          ? '0'
-          : '') + date.getMinutes()}`,
+        `${(date.getHours() < 10 ? '0' : '') + date.getHours()}:${(date.getMinutes() < 10 ? '0' : '') +
+          date.getMinutes()}`
       );
       startEveryDay += 15 * 60 * 1000;
       date = new Date(startEveryDay);
@@ -85,7 +77,7 @@ class Record extends Component {
         this.date.getDate(),
         block.split(':')[0],
         block.split(':')[1],
-        0,
+        0
       );
       if (type === 'end') {
         disabledClass = blockTime <= startTime ? 'disabled' : '';
@@ -115,7 +107,7 @@ class Record extends Component {
       this.date.getDate(),
       end.split(':')[0],
       end.split(':')[1],
-      0,
+      0
     );
     const blockTime = new Date(
       this.date.getFullYear(),
@@ -123,20 +115,20 @@ class Record extends Component {
       this.date.getDate(),
       block.split(':')[0],
       block.split(':')[1],
-      0,
+      0
     );
     if (isCanceled) {
       this.setState({
-        [type]: '0:00',
+        [type]: '0:00'
       });
     } else if (type === 'start' && blockTime > endTime) {
       this.setState({
         start: block,
-        end: '0:00',
+        end: '0:00'
       });
     } else {
       this.setState({
-        [type]: block,
+        [type]: block
       });
     }
   };
@@ -192,7 +184,7 @@ class Record extends Component {
       this.date.getDate(),
       start.split(':')[0],
       start.split(':')[1],
-      0,
+      0
     );
     const endTime = new Date(
       this.date.getFullYear(),
@@ -200,7 +192,7 @@ class Record extends Component {
       this.date.getDate(),
       end.split(':')[0],
       end.split(':')[1],
-      0,
+      0
     );
     return endTime - startTime > 0 ? ((endTime - startTime) / 1000 / 60 / 60).toFixed(2) : '0.00';
   };
@@ -217,7 +209,7 @@ class Record extends Component {
     const { system, sha, publishTitle, appVersion } = this.state;
     this.setState({
       publishContent: `${publishTitle + (publishTitle ? '，' : '')}${system}前端，master，${sha +
-        (sha ? '，' : '')}全量${system === 'app' ? '，' + appVersion : ''}`,
+        (sha ? '，' : '')}全量${system === 'app' ? '，' + appVersion : ''}`
     });
   };
 
@@ -227,7 +219,7 @@ class Record extends Component {
 
   handleInputRemark = e => {
     this.setState({
-      developRemark: e.target.value,
+      developRemark: e.target.value
     });
   };
 
@@ -260,7 +252,7 @@ class Record extends Component {
           data-block={block.toFixed(2)}
         >
           {block.toFixed(2)}
-        </li>,
+        </li>
       );
     }
     return blocks;
@@ -268,9 +260,7 @@ class Record extends Component {
 
   handleChoosePredictTime = e => {
     const isCanceled = e.target.classList.contains('time-block_on');
-    isCanceled
-      ? this.setState({ predict: '0.00' })
-      : this.setState({ predict: e.target.getAttribute('data-block') });
+    isCanceled ? this.setState({ predict: '0.00' }) : this.setState({ predict: e.target.getAttribute('data-block') });
   };
 
   render() {
@@ -285,7 +275,7 @@ class Record extends Component {
       publishTitle,
       sha,
       system,
-      appVersion,
+      appVersion
     } = this.state;
     const during = this.getDuring();
     return (
@@ -294,23 +284,13 @@ class Record extends Component {
           <h1>发布模板</h1>
         </header>
         <div className="app-record__publish">
-          <input
-            type="text"
-            value={publishTitle}
-            onChange={this.handleInputTitle}
-            placeholder="版本名称"
-          />
+          <input type="text" value={publishTitle} onChange={this.handleInputTitle} placeholder="版本名称" />
           <select name="" id="" onChange={this.handleSelectSystem}>
             {this.renderSystem()}
           </select>
           <input type="text" value={sha} onChange={this.handleInputSHA} placeholder="SHA" />
           {system === 'app' && (
-            <input
-              type="text"
-              value={appVersion}
-              onChange={this.handleInputVersion}
-              placeholder="APP 版本号"
-            />
+            <input type="text" value={appVersion} onChange={this.handleInputVersion} placeholder="APP 版本号" />
           )}
         </div>
         <table className="app-record__table" id="publishContent">
@@ -386,7 +366,7 @@ class Record extends Component {
               <td>{during}</td>
               <td
                 dangerouslySetInnerHTML={{
-                  __html: developRemark.replace(/[\r\n]/g, '<br/>'),
+                  __html: developRemark.replace(/[\r\n]/g, '<br/>')
                 }}
               />
             </tr>

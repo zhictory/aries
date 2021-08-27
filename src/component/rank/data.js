@@ -12,7 +12,7 @@ export default [
       { id: 8, label: 'Test 8', value: 25, color: 'orange' },
       { id: 9, label: 'Test 9', value: 28, color: 'gray' },
       { id: 10, label: 'Test 10', value: 48, color: 'brown' },
-      { id: 11, label: 'Test 11', value: 24, color: 'yellowgreen' },
-    ],
-  },
+      { id: 11, label: 'Test 11', value: 24, color: 'yellowgreen' }
+    ]
+  }
 ];

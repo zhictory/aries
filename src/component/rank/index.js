@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 // import PropTypes from "prop-types";
 import { DynamicBarChart } from 'react-dynamic-charts';
 import 'react-dynamic-charts/dist/index.css'; // Don't forget to import the styles
-import data from './data';
+import data from './data.js';
 
 class Rank extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data,
+      data
     };
   }
   componentDidMount() {}
@@ -22,7 +22,7 @@ class Rank extends Component {
       });
       data.push({
         name: 'Rank',
-        values,
+        values
       });
     }
     return <DynamicBarChart barHeight={20} iterationTimeout={100} data={data} />;
