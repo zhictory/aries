@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 // import PropTypes from "prop-types";
-import "./style.css";
+import "./style.less";
 import axios from "axios";
 
 interface IProps {}
