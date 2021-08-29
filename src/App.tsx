@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.less";
+import "./style/App.less";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import routes from "./routes";
 
