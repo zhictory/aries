@@ -2,59 +2,35 @@ import React, { useState, useEffect } from "react";
 // import PropTypes from "prop-types";
 import "./style.less";
 import axios from "axios";
+import { FormControlLabel, Input, Radio, RadioGroup } from "@material-ui/core";
+
+type SystemValue = "ERP" | "APP" | "OA3" | "IBS" | "";
 
 interface IProps {}
 
 interface IState {
   filterList: any[];
   search: { key: string; value: string };
-  loading: boolean;
 }
 
+const prefixClass = "language";
 let langList: any[] = [];
 let langPackage: any = {};
+const url: any = {
+  ERP: "/erp/getLangPackage",
+  OA3: "/oa3/getLangPackage",
+  APP: "/app/getLangPackage",
+  IBS: "/ibs/getLangPackage",
+};
 
 const Language: React.FC<IProps> = (props) => {
   const initState: IState = {
     filterList: [],
     search: { key: "", value: "" },
-    loading: false,
   };
   const [state, setState] = useState<IState>({ ...initState });
-
-  const getLangPackage = (type: string) => {
-    if (state["loading"]) {
-      return false;
-    }
-
-    const url: any = {
-      erp: "/erp/getLangPackage",
-      oa3: "/oa3/getLangPackage",
-      app: "/app/getLangPackage",
-      ibs: "/ibs/getLangPackage",
-    };
-
-    if (langPackage[type]) {
-      setState({ ...state, filterList: langPackage[type] });
-    } else {
-      langList = [];
-      setState({ ...state, filterList: langList, loading: true });
-      axios
-        .get(url[type])
-        .then((resp) => {
-          const data = resp["data"]["response_data"]["langPackage"] || resp["data"]["response_data"]["lang_package"];
-          for (const key in data) {
-            langList.push({ key, value: data[key] });
-          }
-          langPackage[type] = langList;
-          setState({ ...state, filterList: langList, loading: false });
-        })
-        .catch((error) => {
-          console.log(error);
-          setState({ ...state, loading: false });
-        });
-    }
-  };
+  const [systemValue, setSystemValue] = useState<SystemValue>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onKeyChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const value = evt.target.value.toLowerCase();
@@ -75,8 +51,9 @@ const Language: React.FC<IProps> = (props) => {
   };
 
   const onRadioChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const value = evt.target.value;
-    getLangPackage(value);
+    const value: SystemValue = evt.target.value as SystemValue;
+
+    setSystemValue(value);
   };
 
   const copy = (content: string, evt: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
@@ -99,29 +76,53 @@ const Language: React.FC<IProps> = (props) => {
     return () => {};
   }, []);
 
+  useEffect(() => {
+    if (systemValue) {
+      const getLangPackage = () => {
+        if (langPackage[systemValue]) {
+          setState((prevState) => ({ ...prevState, filterList: langPackage[systemValue] }));
+        } else {
+          langList = [];
+
+          setState((prevState) => ({ ...prevState, filterList: langList }));
+          setLoading(true);
+
+          axios
+            .get(url[systemValue])
+            .then((resp) => {
+              const data = resp["data"]["response_data"]["langPackage"] || resp["data"]["response_data"]["lang_package"];
+
+              for (const key in data) {
+                langList.push({ key, value: data[key] });
+              }
+
+              langPackage[systemValue] = langList;
+
+              setState((prevState) => ({ ...prevState, filterList: langList }));
+              setLoading(false);
+            })
+            .catch((error) => {
+              console.log(error);
+              setState((prevState) => ({ ...prevState }));
+              setLoading(false);
+            });
+        }
+      };
+
+      getLangPackage();
+    }
+  }, [systemValue]);
+
   return (
-    <div className="language">
+    <div className={`${prefixClass}`}>
       <div className="form-control">
-        <input placeholder="key" type="text" onChange={onKeyChange} value={state["search"]["key"]} />
-        <input placeholder="value" type="text" onChange={onValueChange} value={state["search"]["value"]} />
-        <ul>
-          <li>
-            <input type="radio" name="langType" value="erp" onChange={onRadioChange} />
-            <span>ERP</span>
-          </li>
-          <li>
-            <input type="radio" name="langType" value="app" onChange={onRadioChange} />
-            <span>APP</span>
-          </li>
-          <li>
-            <input type="radio" name="langType" value="oa3" onChange={onRadioChange} />
-            <span>OA3</span>
-          </li>
-          <li>
-            <input type="radio" name="langType" value="ibs" onChange={onRadioChange} />
-            <span>IBS</span>
-          </li>
-        </ul>
+        <Input placeholder="key" type="text" className={`${prefixClass}-input`} onChange={onKeyChange} value={state["search"]["key"]} />
+        <Input placeholder="key" type="text" className={`${prefixClass}-input`} onChange={onValueChange} value={state["search"]["value"]} />
+        <RadioGroup row aria-label="system" name="system" value={systemValue} onChange={onRadioChange}>
+          {["ERP", "APP", "OA3", "IBS"].map((system) => (
+            <FormControlLabel key={system} value={system} control={<Radio />} label={system} />
+          ))}
+        </RadioGroup>
       </div>
       <ul>
         {state["filterList"].map((item) => (
