@@ -9,10 +9,11 @@ function App() {
       <BrowserRouter>
         <Switch>
           {routes.map((route) => (
-            <Route key={route["path"]} path={route["path"]} component={route["component"]}></Route>
+            <Route key={route.path} path={route.path} component={route.component}></Route>
           ))}
+          <Redirect from="/tool" to="/tool/home"></Redirect>
+          <Redirect from="/" to="/tool/home"></Redirect>
         </Switch>
-        <Redirect from="/" to="/tool"></Redirect>
       </BrowserRouter>
     </div>
   );

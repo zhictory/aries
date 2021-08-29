@@ -5,7 +5,7 @@ import Record from "./components/record";
 
 const routes = [
   {
-    path: "/tool",
+    path: "/tool/home",
     component: Home,
     title: "首页",
   },
