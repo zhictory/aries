@@ -1,31 +1,20 @@
-import React from 'react';
-import './App.css';
-import Home from './component/home';
-import Record from './component/record';
-import Rank from './component/rank';
-import Language from './component/language';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import React from "react";
+import "./App.less";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import routes from "./routes";
 
 function App() {
   return (
-    <BrowserRouter>
-      <div>
+    <div className="App">
+      <BrowserRouter>
         <Switch>
-          <Route path="/tool/language">
-            <Language />
-          </Route>
-          <Route path="/tool/record">
-            <Record />
-          </Route>
-          <Route path="/tool/rank">
-            <Rank />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
+          {routes.map((route) => (
+            <Route key={route["path"]} path={route["path"]} component={route["component"]}></Route>
+          ))}
         </Switch>
-      </div>
-    </BrowserRouter>
+        <Redirect from="/" to="/tool"></Redirect>
+      </BrowserRouter>
+    </div>
   );
 }
 

@@ -1,33 +1,44 @@
 {
-  "name": "koa-react-app",
+  "name": "aries_ts",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://117.78.7.41",
   "dependencies": {
-    "@babel/plugin-transform-typescript": "^7.15.0",
-    "@koa/router": "^10.0.0",
+    "@koa/router": "^10.1.1",
+    "@material-ui/core": "^4.12.3",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.9",
-    "axios": "^0.21.0",
-    "koa": "^2.8.1",
+    "@types/react-router-dom": "^5.1.8",
+    "axios": "^0.21.1",
+    "bootstrap": "5.1.0",
+    "koa": "^2.13.1",
     "koa-static": "^5.0.0",
     "normalize.css": "^8.0.1",
-    "react": "^16.9.0",
-    "react-app-rewired": "^2.1.3",
-    "react-dom": "^16.9.0",
+    "react": "^17.0.2",
+    "react-app-rewired": "^2.1.8",
+    "react-bootstrap": "^2.0.0-beta.6",
+    "react-dom": "^17.0.2",
     "react-dynamic-charts": "^1.0.5",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.1.2"
+    "react-router-dom": "^5.2.1",
+    "react-scripts": "4.0.3",
+    "typescript": "^4.1.2",
+    "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
@@ -42,24 +53,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9",
-    "@storybook/addon-actions": "^6.1.10",
-    "@storybook/addon-essentials": "^6.1.10",
-    "@storybook/addon-links": "^6.1.10",
-    "@storybook/node-logger": "^6.1.10",
-    "@storybook/preset-create-react-app": "^3.1.5",
-    "@storybook/react": "^6.1.10",
-    "@types/react-router-dom": "^5.1.8",
-    "@typescript-eslint/eslint-plugin": "^4.29.3",
-    "babel-eslint": "^10.0.3",
-    "babel-loader": "8.0.6",
-    "eslint": "^6.5.1",
-    "eslint-config-prettier": "^6.4.0",
-    "eslint-loader": "^3.0.2",
-    "eslint-plugin-prettier": "^3.1.1",
-    "eslint-plugin-react": "^7.16.0",
-    "prettier": "^1.18.2",
-    "ts-loader": "8.2.0",
-    "typescript": "^4.4.2"
+    "@types/material-ui": "^0.21.9",
+    "@types/react-bootstrap": "^0.32.26"
   }
 }
