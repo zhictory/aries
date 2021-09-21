@@ -1,3 +1,4 @@
+import Fee from "./components/fee";
 import Home from "./components/home";
 import Language from "./components/language";
 import Rank from "./components/rank";
@@ -23,6 +24,11 @@ const routes = [
     path: "/tool/record",
     component: Record,
     title: "日报模板",
+  },
+  {
+    path: "/tool/fee",
+    component: Fee,
+    title: "个人理财",
   },
 ];
 

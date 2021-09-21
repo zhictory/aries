@@ -12,7 +12,7 @@ const client = new Koa();
 client.use(staticServe(path.join(__dirname, "./build")));
 
 // TODO 如何不遍历所有路由？
-let routes = ["/", "/tool", "/tool/home", "/tool/language", "/tool/rank", "/tool/record"];
+let routes = ["/", "/tool", "/tool/home", "/tool/language", "/tool/rank", "/tool/record", "/tool/fee"];
 routes.forEach((pathname) => app.use(mount(pathname, client)));
 
 // logger
@@ -58,6 +58,11 @@ app.use(async (ctx, next) => {
     const resp = await axios.post("https://idibsapi.wook.id/langPackage", {});
 
     ctx.body = resp.data;
+  }
+  if (ctx.path === "/getFee") {
+    const feeData = require("../notes/备忘录/个人理财.json");
+
+    ctx.body = feeData;
   }
 });
 
