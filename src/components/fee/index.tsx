@@ -9,12 +9,21 @@ import Paper from "@mui/material/Paper";
 import "./style.less";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 
 interface IProps {}
 
 interface IState {
   total: number;
 }
+
+const columns: GridColDef[] = [
+  { field: "商品", headerName: "商品", width: 200 },
+  { field: "单价", headerName: "单价", width: 200 },
+  { field: "数量", headerName: "数量", width: 200 },
+  { field: "总价", headerName: "总价", width: 200 },
+];
 
 const Fee: React.FC<IProps> = (props) => {
   const initState: IState = { total: 0 };
@@ -24,14 +33,19 @@ const Fee: React.FC<IProps> = (props) => {
   useEffect(() => {
     const getList = () => {
       axios.get("/getFee").then((resp) => {
-        setInfo(resp.data);
         let total = 0;
+
         for (const key in resp.data) {
           if (Object.prototype.hasOwnProperty.call(resp.data, key)) {
-            const element = resp.data[key];
+            let element = resp.data[key];
+
+            element.forEach((item, index) => (item.id = `${key}_${index}`));
+
             element.forEach((item) => (total += item.总价));
           }
         }
+
+        setInfo(resp.data);
         setState({ ...state, total });
       });
     };
@@ -43,81 +57,26 @@ const Fee: React.FC<IProps> = (props) => {
 
   return (
     <div>
-      <TextField
-        name="total"
-        label="总计"
-        defaultValue=""
-        value={state.total}
-        InputProps={{
-          readOnly: true,
-        }}
-      />
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>商品</TableCell>
-              <TableCell align="right">单价</TableCell>
-              <TableCell align="right">数量</TableCell>
-              <TableCell align="right">总价</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {info.非必要.map((record) => (
-              <TableRow key={record.name} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                <TableCell>{record.商品}</TableCell>
-                <TableCell align="right">{record.单价}</TableCell>
-                <TableCell align="right">{record.数量}</TableCell>
-                <TableCell align="right">{record.总价}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>商品</TableCell>
-              <TableCell align="right">单价</TableCell>
-              <TableCell align="right">数量</TableCell>
-              <TableCell align="right">总价</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {info.周期.map((record) => (
-              <TableRow key={record.name} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                <TableCell>{record.商品}</TableCell>
-                <TableCell align="right">{record.单价}</TableCell>
-                <TableCell align="right">{record.数量}</TableCell>
-                <TableCell align="right">{record.总价}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>商品</TableCell>
-              <TableCell align="right">单价</TableCell>
-              <TableCell align="right">数量</TableCell>
-              <TableCell align="right">总价</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {info.投资.map((record) => (
-              <TableRow key={record.name} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                <TableCell>{record.商品}</TableCell>
-                <TableCell align="right">{record.单价}</TableCell>
-                <TableCell align="right">{record.数量}</TableCell>
-                <TableCell align="right">{record.总价}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Box mt={2} mb={2}>
+        <TextField
+          name="total"
+          label="总计"
+          defaultValue=""
+          value={state.total}
+          InputProps={{
+            readOnly: true,
+          }}
+        />
+      </Box>
+      <Box mt={2} style={{ height: "400px" }}>
+        <DataGrid rows={info.非必要} columns={columns} pageSize={5} rowsPerPageOptions={[5]} />
+      </Box>
+      <Box mt={2} style={{ height: "400px" }}>
+        <DataGrid rows={info.周期} columns={columns} pageSize={5} rowsPerPageOptions={[5]} />
+      </Box>
+      <Box mt={2} style={{ height: "400px" }}>
+        <DataGrid rows={info.投资} columns={columns} pageSize={5} rowsPerPageOptions={[5]} />
+      </Box>
     </div>
   );
 };
