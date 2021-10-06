@@ -16,6 +16,7 @@ interface IProps {}
 
 interface IState {
   total: number;
+  headers: string[];
 }
 
 const columns: GridColDef[] = [
@@ -26,7 +27,7 @@ const columns: GridColDef[] = [
 ];
 
 const Fee: React.FC<IProps> = (props) => {
-  const initState: IState = { total: 0 };
+  const initState: IState = { total: 0, headers: [] };
   const [state, setState] = useState<IState>({ ...initState });
   const [info, setInfo] = useState<any>({ 非必要: [], 周期: [], 投资: [] });
 
@@ -34,8 +35,11 @@ const Fee: React.FC<IProps> = (props) => {
     const getList = () => {
       axios.get("/getFee").then((resp) => {
         let total = 0;
+        let headers: string[] = [];
 
         for (const key in resp.data) {
+          headers.push(key);
+
           if (Object.prototype.hasOwnProperty.call(resp.data, key)) {
             let element = resp.data[key];
 
@@ -46,7 +50,7 @@ const Fee: React.FC<IProps> = (props) => {
         }
 
         setInfo(resp.data);
-        setState({ ...state, total });
+        setState({ ...state, total, headers });
       });
     };
 
@@ -68,15 +72,14 @@ const Fee: React.FC<IProps> = (props) => {
           }}
         />
       </Box>
-      <Box mt={2} style={{ height: "400px" }}>
-        <DataGrid rows={info.非必要} columns={columns} pageSize={5} rowsPerPageOptions={[5]} />
-      </Box>
-      <Box mt={2} style={{ height: "400px" }}>
-        <DataGrid rows={info.周期} columns={columns} pageSize={5} rowsPerPageOptions={[5]} />
-      </Box>
-      <Box mt={2} style={{ height: "400px" }}>
-        <DataGrid rows={info.投资} columns={columns} pageSize={5} rowsPerPageOptions={[5]} />
-      </Box>
+      {state.headers.map((header) => (
+        <Box mt={2}>
+          <h2>{header}</h2>
+          <Box mt={2} style={{ height: "400px" }}>
+            <DataGrid rows={info[header]} columns={columns} pageSize={5} rowsPerPageOptions={[5]} />
+          </Box>
+        </Box>
+      ))}
     </div>
   );
 };
