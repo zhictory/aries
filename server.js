@@ -61,7 +61,7 @@ app.use(async (ctx, next) => {
   }
   if (ctx.path === "/getFee") {
     const feeData = require("../notes/备忘录/个人理财.json");
-
+    console.log(feeData);
     ctx.body = feeData;
   }
 });
